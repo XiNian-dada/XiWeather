@@ -1,0 +1,4 @@
+name: XiWeather
+version: '${project.version}'
+main: cn.hairuosky.xiweather.XiWeather
+api-version: '1.16'

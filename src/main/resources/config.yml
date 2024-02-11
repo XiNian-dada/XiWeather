@@ -1,0 +1,13 @@
+interval: 600
+fog:
+  radius: 15
+  density: 18888
+  duration: 600
+  worlds:
+    - test
+    - world
+acid_rain:
+  duration: 600
+  worlds:
+    - test
+    - world
