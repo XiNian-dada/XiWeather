@@ -15,10 +15,11 @@ public class Meteor_Shower extends BukkitRunnable {
     private final World world;
     private final int length;
     private final Random random = new Random();
-
-    public Meteor_Shower(World world, int length) {
+    private final int height;
+    public Meteor_Shower(World world, int length, int height) {
         this.world = world;
         this.length = length;
+        this.height = height;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class Meteor_Shower extends BukkitRunnable {
         // 获取所有在线玩家的位置并在其附近生成流星雨效果
         Collection<? extends Player> players = world.getPlayers();
         for (Player player : players) {
-            if (player.getLocation().getY() > 70) {
+            if (player.getLocation().getY() > height) {
                 Location playerLocation = player.getLocation();
                 generateMeteorShower(playerLocation);
             }
@@ -75,8 +76,8 @@ public class Meteor_Shower extends BukkitRunnable {
         }
     }
 
-    public static void startMeteorShower(World world, int length) {
-        Meteor_Shower meteorShower = new Meteor_Shower(world, length);
+    public static void startMeteorShower(World world, int length, int height) {
+        Meteor_Shower meteorShower = new Meteor_Shower(world, length,height);
         meteorShower.runTaskTimer(JavaPlugin.getPlugin(XiWeather.class), 0, 100); // 每隔0.25秒执行一次任务，增加密度
     }
 }

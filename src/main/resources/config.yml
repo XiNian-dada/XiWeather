@@ -15,6 +15,6 @@ meteor_shower:
   chance: 80
   worlds:
     - test
-  height: 255
+  min_height: 70
   length: 8
 

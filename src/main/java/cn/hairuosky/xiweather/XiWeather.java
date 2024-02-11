@@ -136,25 +136,32 @@ public class XiWeather extends JavaPlugin {
         List<String> meteorShowerWorlds = config.getStringList("meteor_shower.worlds");
         int chance = config.getInt("meteor_shower.chance");
 
-        // 随机生成一个数，用于判断流星雨是否发生
-        int randomValue = random.nextInt(100) + 1; // 生成1到100的随机整数
-
-        if (randomValue <= chance) {
-            // 遍历所有指定的世界，启动流星雨效果
-            for (String worldName : meteorShowerWorlds) {
-                World world = Bukkit.getWorld(worldName);
-                if (world != null) {
-                    getLogger().info("Starting meteor shower in world '" + worldName + "'...");
-                    // 设置流星雨的持续时间和尾长
-                    int length = config.getInt("meteor_shower.length");
-                    // 启动流星雨效果
-                    Meteor_Shower.startMeteorShower(world, length);
+        // 获取当前世界
+        for (String worldName : meteorShowerWorlds) {
+            World world = Bukkit.getWorld(worldName);
+            if (world != null) {
+                getLogger().info("Checking meteor shower possibility in world '" + worldName + "'...");
+                // 检查是否处于夜晚
+                long time = world.getFullTime();
+                if (time >= 13000 && time <= 23000) {
+                    // 随机生成一个数，用于判断流星雨是否发生
+                    int randomValue = random.nextInt(100) + 1; // 生成1到100的随机整数
+                    if (randomValue <= chance) {
+                        // 设置流星雨的持续时间和尾长
+                        int length = config.getInt("meteor_shower.length");
+                        int height = config.getInt("meteor_shower.min_height");
+                        getLogger().info("Starting meteor shower in world '" + worldName + "'...");
+                        // 启动流星雨效果
+                        Meteor_Shower.startMeteorShower(world, length, height);
+                    } else {
+                        getLogger().info("Meteor shower did not occur this time in world '" + worldName + "'.");
+                    }
                 } else {
-                    getLogger().warning("World '" + worldName + "' not found! Meteor shower will not be started in this world.");
+                    getLogger().info("It's not night time in world '" + worldName + "'. Meteor shower will not occur.");
                 }
+            } else {
+                getLogger().warning("World '" + worldName + "' not found! Meteor shower will not be started in this world.");
             }
-        } else {
-            getLogger().info("Meteor shower did not occur this time.");
         }
     }
 
