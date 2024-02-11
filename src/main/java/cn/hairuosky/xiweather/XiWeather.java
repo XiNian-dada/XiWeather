@@ -21,6 +21,8 @@ public class XiWeather extends JavaPlugin {
 
         // 启动定时任务，每隔一定时间生成随机天气效果
         Bukkit.getScheduler().runTaskTimer(this, this::generateRandomWeather, interval, interval);
+
+        startMeteorShower();
     }
 
     @Override
@@ -44,11 +46,11 @@ public class XiWeather extends JavaPlugin {
             List<String> acidRainWorlds = config.getStringList("acid_rain.worlds");
 
             // 生成随机数，用于选择生成的天气效果
-            int randomValue = random.nextInt(2) + 1; // 生成1到2的随机整数
+            int randomValue = random.nextInt(2) + 1; // 生成1到3的随机整数
 
             // 根据随机数选择生成的天气效果
             switch (randomValue) {
-            //switch (1) {
+            //switch (2) {
                 case 1:
                     if (!acidRainWorlds.isEmpty()) {
                         startAcidRainEffect(acidRainWorlds, config);
@@ -126,6 +128,33 @@ public class XiWeather extends JavaPlugin {
 
             // 延迟取消天气进行中标志
             Bukkit.getScheduler().runTaskLater(this, () -> weatherInProgress = false, duration * 20L);
+        }
+    }
+    // 在适当的位置调用该方法，启动流星雨效果
+    private void startMeteorShower() {
+        FileConfiguration config = getConfig();
+        List<String> meteorShowerWorlds = config.getStringList("meteor_shower.worlds");
+        int chance = config.getInt("meteor_shower.chance");
+
+        // 随机生成一个数，用于判断流星雨是否发生
+        int randomValue = random.nextInt(100) + 1; // 生成1到100的随机整数
+
+        if (randomValue <= chance) {
+            // 遍历所有指定的世界，启动流星雨效果
+            for (String worldName : meteorShowerWorlds) {
+                World world = Bukkit.getWorld(worldName);
+                if (world != null) {
+                    getLogger().info("Starting meteor shower in world '" + worldName + "'...");
+                    // 设置流星雨的持续时间和尾长
+                    int length = config.getInt("meteor_shower.length");
+                    // 启动流星雨效果
+                    Meteor_Shower.startMeteorShower(world, length);
+                } else {
+                    getLogger().warning("World '" + worldName + "' not found! Meteor shower will not be started in this world.");
+                }
+            }
+        } else {
+            getLogger().info("Meteor shower did not occur this time.");
         }
     }
 

@@ -1,4 +1,4 @@
-interval: 600
+interval: 5
 fog:
   radius: 15
   density: 18888
@@ -11,3 +11,10 @@ acid_rain:
   worlds:
     - test
     - world
+meteor_shower:
+  chance: 80
+  worlds:
+    - test
+  height: 255
+  length: 8
+

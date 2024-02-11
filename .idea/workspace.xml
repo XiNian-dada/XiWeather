@@ -9,17 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/AcidRain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Fog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="基础功能更新-24.2.11-雾霾酸雨">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Meteor_Shower.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,8 +97,16 @@
       <option name="presentableId" value="Default" />
       <updated>1707569573827</updated>
       <workItem from="1707569574946" duration="10073000" />
-      <workItem from="1707648418663" duration="5312000" />
+      <workItem from="1707648418663" duration="20432000" />
     </task>
+    <task id="LOCAL-00001" summary="基础功能更新-24.2.11-雾霾酸雨">
+      <created>1707658294803</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1707658294803</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -112,5 +114,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="基础功能更新-24.2.11-雾霾酸雨" />
+    <option name="LAST_COMMIT_MESSAGE" value="基础功能更新-24.2.11-雾霾酸雨" />
   </component>
 </project>
