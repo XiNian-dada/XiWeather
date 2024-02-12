@@ -54,7 +54,7 @@ public class Fog extends BukkitRunnable {
         }
 
         // 减少剩余tick数
-        durationTicks--;
+        durationTicks -= 20;
 
         // 如果持续时间已经达到或超过预设的持续时间，取消任务
         if (durationTicks <= 0) {

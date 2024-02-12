@@ -5,7 +5,10 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class XiWeather extends JavaPlugin {
 
@@ -44,13 +47,14 @@ public class XiWeather extends JavaPlugin {
             FileConfiguration config = getConfig();
             List<String> fogWorlds = config.getStringList("fog.worlds");
             List<String> acidRainWorlds = config.getStringList("acid_rain.worlds");
+            List<String > windWorlds = config.getStringList("wind.worlds");
 
             // 生成随机数，用于选择生成的天气效果
-            int randomValue = random.nextInt(2) + 1; // 生成1到3的随机整数
+            int randomValue = random.nextInt(3) + 1; // 生成1到3的随机整数
 
             // 根据随机数选择生成的天气效果
             switch (randomValue) {
-            //switch (2) {
+            //switch (3) {
                 case 1:
                     if (!acidRainWorlds.isEmpty()) {
                         startAcidRainEffect(acidRainWorlds, config);
@@ -59,6 +63,11 @@ public class XiWeather extends JavaPlugin {
                 case 2:
                     if (!fogWorlds.isEmpty()) {
                         startFogEffect(fogWorlds, config);
+                    }
+                    break;
+                case 3:
+                    if (!windWorlds.isEmpty()){
+                        startWindEffect(windWorlds, config);
                     }
                     break;
                 default:
@@ -117,7 +126,7 @@ public class XiWeather extends JavaPlugin {
             int duration = config.getInt("fog.duration");
 
             // 创建 Fog 对象并传递 XiWeather 实例
-            Fog fog = new Fog(world, duration, density, radius);
+            Fog fog = new Fog(world, duration * 20, density, radius);
 
             // 启动 Fog 对象，会自动调度任务
             int taskId = fog.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
@@ -132,39 +141,68 @@ public class XiWeather extends JavaPlugin {
     }
     // 在适当的位置调用该方法，启动流星雨效果
     private void startMeteorShower() {
-        FileConfiguration config = getConfig();
-        List<String> meteorShowerWorlds = config.getStringList("meteor_shower.worlds");
-        int chance = config.getInt("meteor_shower.chance");
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            FileConfiguration config = getConfig();
+            List<String> meteorShowerWorlds = config.getStringList("meteor_shower.worlds");
+            int chance = config.getInt("meteor_shower.chance");
 
-        // 获取当前世界
-        for (String worldName : meteorShowerWorlds) {
-            World world = Bukkit.getWorld(worldName);
-            if (world != null) {
-                getLogger().info("Checking meteor shower possibility in world '" + worldName + "'...");
-                // 检查是否处于夜晚
-                long time = world.getFullTime();
-                if (time >= 13000 && time <= 23000) {
-                    // 随机生成一个数，用于判断流星雨是否发生
-                    int randomValue = random.nextInt(100) + 1; // 生成1到100的随机整数
-                    if (randomValue <= chance) {
-                        // 设置流星雨的持续时间和尾长
-                        int length = config.getInt("meteor_shower.length");
-                        int height = config.getInt("meteor_shower.min_height");
-                        getLogger().info("Starting meteor shower in world '" + worldName + "'...");
-                        // 启动流星雨效果
-                        Meteor_Shower.startMeteorShower(world, length, height);
+            // 检查每个世界的流星雨可能性
+            for (String worldName : meteorShowerWorlds) {
+                World world = Bukkit.getWorld(worldName);
+                if (world != null) {
+                    getLogger().info("Checking meteor shower possibility in world '" + worldName + "'...");
+                    long time = world.getFullTime() % 24000; // 获取世界时间的当前tick数
+                    if (time >= 13000) { // 检查是否处于夜晚
+                        int randomValue = random.nextInt(100) + 1;
+                        if (randomValue <= chance) {
+                            int length = config.getInt("meteor_shower.length");
+                            int height = config.getInt("meteor_shower.min_height");
+                            getLogger().info("Starting meteor shower in world '" + worldName + "'...");
+                            Meteor_Shower.startMeteorShower(world, length, height);
+                        } else {
+                            getLogger().info("Meteor shower did not occur this time in world '" + worldName + "'.");
+                        }
                     } else {
-                        getLogger().info("Meteor shower did not occur this time in world '" + worldName + "'.");
+                        getLogger().info("It's not night time in world '" + worldName + "'. Meteor shower will not occur.");
                     }
                 } else {
-                    getLogger().info("It's not night time in world '" + worldName + "'. Meteor shower will not occur.");
+                    getLogger().warning("World '" + worldName + "' not found! Meteor shower will not be started in this world.");
                 }
-            } else {
-                getLogger().warning("World '" + worldName + "' not found! Meteor shower will not be started in this world.");
             }
+        }, 0, 1200); // 每一分钟（1200 ticks）检查一次
+    }
+    private void startWindEffect(List<String> worlds, FileConfiguration config) {
+        for (String worldName : worlds) {
+            // 获取指定的世界对象
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                getLogger().warning("World '" + worldName + "' not found! Wind effect will not be started in this world.");
+                continue;
+            }
+
+            getLogger().info("Starting wind effect in world '" + worldName + "'...");
+
+            // 从配置文件中读取大风天效果的配置
+            int duration = config.getInt("wind.duration");
+            int radius = config.getInt("wind.radius");
+            int particle_count = config.getInt("wind.particle_count");
+            double strength = config.getDouble("wind.strength");
+            int player_speed = config.getInt("wind.player_speed");
+            double distance = config.getDouble("wind.distance");
+            // 创建 Wind 对象并传递 XiWeather 实例
+            Wind wind = new Wind(world,particle_count,distance,strength,player_speed - 1,duration*20,radius);
+
+            // 启动 Wind 对象，会自动调度任务
+            int taskId = wind.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
+            weatherTasks.put(world, taskId); // 记录任务ID
+
+            // 设置天气进行中标志
+            weatherInProgress = true;
+
+            // 延迟取消天气进行中标志
+            Bukkit.getScheduler().runTaskLater(this, () -> weatherInProgress = false, duration * 20L);
         }
     }
-
     private void cancelPreviousWeatherTasks(World world) {
         if (weatherTasks.containsKey(world)) {
             int taskId = weatherTasks.get(world);
