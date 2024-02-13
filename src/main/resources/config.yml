@@ -14,7 +14,7 @@ fog:
   #影响范围（以玩家为中心）
   radius: 15
   #雾霾密度
-  density: 18888
+  density: 8000
   #影响时长（s）
   duration: 60
   #影响世界

@@ -2,3 +2,6 @@ name: XiWeather
 version: '${project.version}'
 main: cn.hairuosky.xiweather.XiWeather
 api-version: '1.16'
+author: "XiNian_dada"
+website: "https://www.hairuosky.cn"
+description: "一款让你在我的世界体验更多天气效果的插件~~~"
