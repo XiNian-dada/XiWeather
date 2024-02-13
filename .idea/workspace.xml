@@ -9,10 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="基础功能更新-24.2.12-流星雨">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Wind.java" afterDir="false" />
+    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="基础功能更新-24.2.12-大风天气">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Thunderstorm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Fog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Fog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
@@ -99,7 +98,8 @@
       <updated>1707569573827</updated>
       <workItem from="1707569574946" duration="10073000" />
       <workItem from="1707648418663" duration="20811000" />
-      <workItem from="1707730267776" duration="17311000" />
+      <workItem from="1707730267776" duration="18955000" />
+      <workItem from="1707815867389" duration="2762000" />
     </task>
     <task id="LOCAL-00001" summary="基础功能更新-24.2.11-雾霾酸雨">
       <created>1707658294803</created>
@@ -115,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1707674947777</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="基础功能更新-24.2.12-大风天气">
+      <created>1707748035801</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1707748035801</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,6 +132,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="基础功能更新-24.2.11-雾霾酸雨" />
     <MESSAGE value="基础功能更新-24.2.12-流星雨" />
-    <option name="LAST_COMMIT_MESSAGE" value="基础功能更新-24.2.12-流星雨" />
+    <MESSAGE value="基础功能更新-24.2.12-大风天气" />
+    <option name="LAST_COMMIT_MESSAGE" value="基础功能更新-24.2.12-大风天气" />
   </component>
 </project>

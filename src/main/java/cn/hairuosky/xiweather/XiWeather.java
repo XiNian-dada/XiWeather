@@ -48,13 +48,13 @@ public class XiWeather extends JavaPlugin {
             List<String> fogWorlds = config.getStringList("fog.worlds");
             List<String> acidRainWorlds = config.getStringList("acid_rain.worlds");
             List<String > windWorlds = config.getStringList("wind.worlds");
-
+            List<String> thunderstormWorlds = config.getStringList("thunderstorm.worlds");
             // 生成随机数，用于选择生成的天气效果
-            int randomValue = random.nextInt(3) + 1; // 生成1到3的随机整数
+            int randomValue = random.nextInt(4) + 1; // 生成1到3的随机整数
 
             // 根据随机数选择生成的天气效果
             switch (randomValue) {
-            //switch (3) {
+            //switch (4) {
                 case 1:
                     if (!acidRainWorlds.isEmpty()) {
                         startAcidRainEffect(acidRainWorlds, config);
@@ -68,6 +68,11 @@ public class XiWeather extends JavaPlugin {
                 case 3:
                     if (!windWorlds.isEmpty()){
                         startWindEffect(windWorlds, config);
+                    }
+                    break;
+                case 4:
+                    if (!thunderstormWorlds.isEmpty()){
+                        startThunderstormEffect(thunderstormWorlds, config);
                     }
                     break;
                 default:
@@ -194,6 +199,39 @@ public class XiWeather extends JavaPlugin {
 
             // 启动 Wind 对象，会自动调度任务
             int taskId = wind.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
+            weatherTasks.put(world, taskId); // 记录任务ID
+
+            // 设置天气进行中标志
+            weatherInProgress = true;
+
+            // 延迟取消天气进行中标志
+            Bukkit.getScheduler().runTaskLater(this, () -> weatherInProgress = false, duration * 20L);
+        }
+    }
+
+    private void startThunderstormEffect(List<String> worlds, FileConfiguration config) {
+        for (String worldName : worlds) {
+            // 获取指定的世界对象
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                getLogger().warning("World '" + worldName + "' not found! Thunderstorm effect will not be started in this world.");
+                continue;
+            }
+
+            getLogger().info("Starting thunderstorm effect in world '" + worldName + "'...");
+
+            // 从配置文件中读取雷暴效果的配置
+            int duration = config.getInt("thunderstorm.duration");
+            int radius = config.getInt("thunderstorm.radius");
+            double chance = config.getInt("thunderstorm.chance");
+            double trans_chance = chance / 100;
+            int delay = config.getInt("thunderstorm.delay");
+
+            // 创建 Thunderstorm 对象并传递 XiWeather 实例
+            Thunderstorm thunderstorm = new Thunderstorm(this, world, duration * 20, radius, trans_chance, delay);
+
+            // 启动 Thunderstorm 对象，会自动调度任务
+            int taskId = thunderstorm.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
             weatherTasks.put(world, taskId); // 记录任务ID
 
             // 设置天气进行中标志

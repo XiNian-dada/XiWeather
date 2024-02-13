@@ -1,6 +1,13 @@
+##################################
+#                                #
+#                                #
+#          XiWeather             #
+#                                #
+#                                #
+##################################
 
 #天气刷新间隔，单位秒
-interval: 60
+interval: 3
 
 #雾霾天气
 fog:
@@ -37,7 +44,17 @@ wind:
   distance: 16.0
   #玩家获得的速度加成等级
   player_speed: 1
+#雷暴
+thunderstorm:
+  duration: 60
+  worlds:
+    - test
+    - world
+  chance: 0.3 #每秒被雷击的概率
+  radius: 16 #打击半径
+  delay: 20
 
+#流星雨
 meteor_shower:
   chance: 80
   worlds:
