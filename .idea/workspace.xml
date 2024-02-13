@@ -9,10 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="基础功能更新-24.2.13-雷暴天气">
+    <list default="true" id="97d50286-c87d-487f-a682-8fca6e760d1e" name="变更" comment="基础功能更新-24.2.13-性能修复">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/Rainbow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hairuosky/xiweather/XiWeather.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +99,7 @@
       <workItem from="1707569574946" duration="10073000" />
       <workItem from="1707648418663" duration="20811000" />
       <workItem from="1707730267776" duration="18955000" />
-      <workItem from="1707815867389" duration="3559000" />
+      <workItem from="1707815867389" duration="9967000" />
     </task>
     <task id="LOCAL-00001" summary="基础功能更新-24.2.11-雾霾酸雨">
       <created>1707658294803</created>
@@ -128,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1707818745004</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="基础功能更新-24.2.13-性能修复">
+      <created>1707819573641</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1707819573641</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +148,7 @@
     <MESSAGE value="基础功能更新-24.2.12-流星雨" />
     <MESSAGE value="基础功能更新-24.2.12-大风天气" />
     <MESSAGE value="基础功能更新-24.2.13-雷暴天气" />
-    <option name="LAST_COMMIT_MESSAGE" value="基础功能更新-24.2.13-雷暴天气" />
+    <MESSAGE value="基础功能更新-24.2.13-性能修复" />
+    <option name="LAST_COMMIT_MESSAGE" value="基础功能更新-24.2.13-性能修复" />
   </component>
 </project>

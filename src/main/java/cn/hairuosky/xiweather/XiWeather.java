@@ -3,17 +3,22 @@ package cn.hairuosky.xiweather;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class XiWeather extends JavaPlugin {
+public class XiWeather extends JavaPlugin implements Listener {
 
     private final Random random = new Random();
     private final Map<World, Integer> weatherTasks = new HashMap<>();
+    private final Map<World, Integer> rainbowTasks = new HashMap<>();
     private boolean weatherInProgress = false;
 
     @Override
@@ -21,10 +26,11 @@ public class XiWeather extends JavaPlugin {
         saveDefaultConfig();
         FileConfiguration config = getConfig();
         int interval = config.getInt("interval") * 20; // 将间隔转换为ticks
-
+        getLogger().info("欢迎使用XiWeather");
+        getLogger().info("好好享受全新的天气效果吧");
         // 启动定时任务，每隔一定时间生成随机天气效果
         Bukkit.getScheduler().runTaskTimer(this, this::generateRandomWeather, interval, interval);
-
+        getServer().getPluginManager().registerEvents(this, this);
         startMeteorShower();
     }
 
@@ -241,6 +247,47 @@ public class XiWeather extends JavaPlugin {
             Bukkit.getScheduler().runTaskLater(this, () -> weatherInProgress = false, duration * 20L);
         }
     }
+    // 启动彩虹效果
+    private void startRainbowEffect(World world) {
+        getLogger().info("Starting rainbow effect in world '" + world.getName() + "'...");
+
+        // 从配置文件中读取彩虹效果的配置
+        int radius = getConfig().getInt("rainbow.radius");
+        int duration = getConfig().getInt("rainbow.duration");
+        int density = getConfig().getInt("rainbow.density");
+        int regeneration = getConfig().getInt("rainbow.regeneration");
+        // 创建 Rainbow 对象并传递 XiWeather 实例
+        Rainbow rainbow = new Rainbow(world, duration * 20, density ,radius, regeneration-1);
+
+        // 启动 Rainbow 对象，会自动调度任务
+        int taskId = rainbow.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
+        rainbowTasks.put(world, taskId); // 记录任务ID
+
+        // 设置彩虹进行中标志
+
+        // 延迟取消彩虹进行中标志
+        Bukkit.getScheduler().runTaskLater(this, () -> getLogger().info("Rainbow effect ended in world '" + world.getName() + "'."), duration * 20L);
+    }
+
+    // 监听天气变化事件，如果天气停止后激活彩虹效果
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent event) {
+        if (!event.toWeatherState()) { // 如果天气变为晴朗
+            World world = event.getWorld();
+            if (rainbowTasks.containsKey(world)) {
+                return; // 如果已经存在彩虹任务，则不重复开启
+            }
+            // 从配置文件中读取彩虹出现的概率（百分比）
+            double rainbowChance = getConfig().getDouble("rainbow.chance");
+            // 将百分比转换为小数
+            double rainbowProbability = rainbowChance / 100.0;
+            // 判断是否启动彩虹效果
+            if (random.nextDouble() <= rainbowProbability && !weatherInProgress) {
+                startRainbowEffect(world); // 启动彩虹效果
+            }
+        }
+    }
+
     private void cancelPreviousWeatherTasks(World world) {
         if (weatherTasks.containsKey(world)) {
             int taskId = weatherTasks.get(world);
