@@ -53,7 +53,14 @@ thunderstorm:
   chance: 0.3 #每秒被雷击的概率
   radius: 16 #打击半径
   delay: 20
-
+hailstorm:
+  worlds:
+    - world
+    - test
+  duration: 60
+  radius: 16
+  delay: 2
+  density: 10
 #流星雨
 meteor_shower:
   chance: 80
@@ -69,3 +76,4 @@ rainbow:
   radius: 16
   density: 800
   regeneration: 1
+

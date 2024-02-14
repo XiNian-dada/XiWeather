@@ -55,12 +55,13 @@ public class XiWeather extends JavaPlugin implements Listener {
             List<String> acidRainWorlds = config.getStringList("acid_rain.worlds");
             List<String > windWorlds = config.getStringList("wind.worlds");
             List<String> thunderstormWorlds = config.getStringList("thunderstorm.worlds");
+            List<String> hailstormWorlds = config.getStringList("hailstorm.worlds");
             // 生成随机数，用于选择生成的天气效果
             int randomValue = random.nextInt(4) + 1; // 生成1到3的随机整数
 
             // 根据随机数选择生成的天气效果
-            switch (randomValue) {
-            //switch (4) {
+            //switch (randomValue) {
+            switch (5) {
                 case 1:
                     if (!acidRainWorlds.isEmpty()) {
                         startAcidRainEffect(acidRainWorlds, config);
@@ -79,6 +80,11 @@ public class XiWeather extends JavaPlugin implements Listener {
                 case 4:
                     if (!thunderstormWorlds.isEmpty()){
                         startThunderstormEffect(thunderstormWorlds, config);
+                    }
+                    break;
+                case 5:
+                    if (!hailstormWorlds.isEmpty()){
+                        startHailEffect(hailstormWorlds, config);
                     }
                     break;
                 default:
@@ -268,22 +274,57 @@ public class XiWeather extends JavaPlugin implements Listener {
         // 延迟取消彩虹进行中标志
         Bukkit.getScheduler().runTaskLater(this, () -> getLogger().info("Rainbow effect ended in world '" + world.getName() + "'."), duration * 20L);
     }
+    private void startHailEffect(List<String> worlds, FileConfiguration config) {
+        for (String worldName : worlds) {
+            // 获取指定的世界对象
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                getLogger().warning("World '" + worldName + "' not found! Hail effect will not be started in this world.");
+                continue;
+            }
 
+            getLogger().info("Starting hail effect in world '" + worldName + "'...");
+
+
+
+            // 从配置文件中读取冰雹效果的配置
+            int density = config.getInt("hailstorm.density");
+            int duration = config.getInt("hailstorm.duration");
+            int radius = config.getInt("hailstorm.radius");
+            int delay = config.getInt("hailstorm.delay");
+
+            // 创建 HailEffect 对象并传递 XiWeather 实例
+            Hailstorm hailstorm = new Hailstorm(this, world, duration * 20, radius, delay,density);
+
+            // 启动 HailEffect 对象，会自动调度任务
+            int taskId = hailstorm.runTaskTimer(this, 0, 20).getTaskId(); // 每隔一秒调度一次任务
+            weatherTasks.put(world, taskId); // 记录任务ID
+
+            // 设置天气进行中标志
+            weatherInProgress = true;
+
+            // 延迟取消天气进行中标志
+            Bukkit.getScheduler().runTaskLater(this, () -> weatherInProgress = false, duration * 20L);
+        }
+    }
     // 监听天气变化事件，如果天气停止后激活彩虹效果
+
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
+        World world = event.getWorld();
+        String worldName = world.getName();
+        List<String> rainbowWorlds = getConfig().getStringList("rainbow.worlds");
+
         if (!event.toWeatherState()) { // 如果天气变为晴朗
-            World world = event.getWorld();
-            if (rainbowTasks.containsKey(world)) {
-                return; // 如果已经存在彩虹任务，则不重复开启
-            }
-            // 从配置文件中读取彩虹出现的概率（百分比）
-            double rainbowChance = getConfig().getDouble("rainbow.chance");
-            // 将百分比转换为小数
-            double rainbowProbability = rainbowChance / 100.0;
-            // 判断是否启动彩虹效果
-            if (random.nextDouble() <= rainbowProbability && !weatherInProgress) {
-                startRainbowEffect(world); // 启动彩虹效果
+            if (rainbowWorlds.contains(worldName) && !rainbowTasks.containsKey(world) && !weatherInProgress && !weatherTasks.containsKey(world)) {
+                // 从配置文件中读取彩虹出现的概率（百分比）
+                double rainbowChance = getConfig().getDouble("rainbow.chance");
+                // 将百分比转换为小数
+                double rainbowProbability = rainbowChance / 100.0;
+                // 判断是否启动彩虹效果
+                if (random.nextDouble() <= rainbowProbability) {
+                    startRainbowEffect(world); // 启动彩虹效果
+                }
             }
         }
     }
